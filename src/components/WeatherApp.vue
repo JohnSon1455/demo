@@ -35,6 +35,7 @@
 
       <div class="btn-container">
         <button class="loc-button" @click="handleLocationSearch">Search Location</button>
+        <div v-if="error" class="error-message">{{ error }}</div>
       </div>
     </div>
   </div>
@@ -59,6 +60,7 @@ export default {
         { title: 'WIND SPEED', value: '' }
       ],
       daysWeather: [],
+      error: null,
       weatherIconMap: {
         '01d': 'sun',
         '01n': 'moon',
@@ -132,13 +134,14 @@ export default {
           }
         })
         .catch(error => {
-          alert(`Error fetching weather data: ${error} (Api Error)`);
+          this.error = `Error fetching weather data: ${error} (Api Error)`;
         });
     },
-    handleLocationSearch() {
+     handleLocationSearch() {
       const location = prompt('Enter a location:');
       if (!location) return;
 
+      this.error = null; // 清除之前的錯誤訊息
       this.fetchWeatherData(location);
     }
   }
